@@ -1,5 +1,3 @@
-const { kv } = require('@vercel/kv');
-
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -39,20 +37,6 @@ module.exports = async function handler(req, res) {
   console.log('========== CAPTURA ==========');
   console.log(JSON.stringify(entry, null, 2));
   console.log('=============================');
-
-  // Salva no Vercel KV para consulta posterior
-  try {
-    const key = `cap:${Date.now()}`;
-    await kv.set(key, JSON.stringify(entry), { ex: 60 * 60 * 24 * 30 }); // 30 dias
-
-    // Mantém lista de keys
-    const keys = (await kv.get('capture_keys')) || [];
-    keys.push(key);
-    await kv.set('capture_keys', JSON.stringify(keys));
-  } catch (e) {
-    // KV não configurado — sem problemas, os logs ainda ficam no console
-    console.log('[KV não disponível]', e.message);
-  }
 
   res.status(200).json({ ok: true });
 };
